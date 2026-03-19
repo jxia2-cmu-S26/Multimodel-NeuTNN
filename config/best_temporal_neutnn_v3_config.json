@@ -1,0 +1,18 @@
+{
+  "n_thresholds": 3,
+  "threshold_base": 0.0112,
+  "scale": 1.8,
+  "window_len": 128,
+  "window_stride": 64,
+  "k1": 7,
+  "s1": 2,
+  "seg1": 24,
+  "k2": 3,
+  "s2": 1,
+  "seg2": 12,
+  "proto2": 2,
+  "capture": 1.5,
+  "backoff": 0.1,
+  "frac": 0.15,
+  "epochs": 3
+}

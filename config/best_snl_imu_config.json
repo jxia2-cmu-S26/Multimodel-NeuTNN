@@ -1,0 +1,11 @@
+{
+  "capture": 1.0,
+  "search": 0.2,
+  "backoff": 0.8,
+  "frac": 0.1,
+  "wBase": 14,
+  "wMax": 14,
+  "voting_thresh": 0.0,
+  "epochs": 3,
+  "inc_learn_eval": 1
+}

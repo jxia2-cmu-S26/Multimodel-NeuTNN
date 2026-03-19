@@ -1,0 +1,28 @@
+Best SNL-IMU+EEG Result
+============================================================
+Train Accuracy: 48.2000%
+Test Accuracy:  70.0000%
+
+Best Config:
+{
+  "capture": 1.0,
+  "search": 0.2,
+  "backoff": 0.8,
+  "frac": 0.1,
+  "wBase": 14,
+  "wMax": 14,
+  "voting_thresh": 0.0,
+  "epochs": 3,
+  "inc_learn_eval": 1
+}
+
+Confusion Matrix (rows=true, cols=pred):
+[[ 15 113  22   0]
+ [  0 147   3   0]
+ [  0  18 132   0]
+ [  0   0  24 126]]
+
+Per-class accuracy:  [0.775, 0.7766666666666666, 0.8883333333333333, 0.96]
+Per-class precision: [1.0, 0.5287769784172662, 0.7292817679558011, 1.0]
+Per-class recall:    [0.1, 0.98, 0.88, 0.84]
+Per-class F1:        [0.18181818181818182, 0.6869158878504673, 0.797583081570997, 0.9130434782608696]
