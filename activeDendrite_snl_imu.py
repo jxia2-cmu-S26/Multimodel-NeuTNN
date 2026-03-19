@@ -1,5 +1,5 @@
 """
- Author: Shanmuga Venkatachalam
+ Author: Shanmuga Venkatachalam, Julia Xia
  Adapted for IMU data with delta modulation encoding.
 """
 

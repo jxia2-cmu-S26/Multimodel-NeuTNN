@@ -1,6 +1,6 @@
 """
- Author: Shanmuga Venkatachalam
- Adapted for IMU data with delta modulation encoding.
+ Author: Shanmuga Venkatachalam, Julia Xia
+ Adapted for IMU data and EEG data with delta modulation encoding.
 """
 
 ### Importing libraries ###
