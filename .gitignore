@@ -1,4 +1,8 @@
 __pycache__/**
 archive/**
 imu_dataset_clean/
+graphs/
+graphs_core/
+config/
+
 

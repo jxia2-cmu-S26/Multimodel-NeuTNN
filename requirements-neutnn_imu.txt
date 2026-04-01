@@ -1,0 +1,16 @@
+# NeuTNN_imu + experiment_neutnn_imu_eeg_core.py
+#
+# NumPy vs PyTorch vs innuce-spikify
+# ---------------------------------
+# - innuce-spikify 0.3.x declares numpy>=2.1.0
+# - Older PyTorch wheels + NumPy 2 used to raise: RuntimeError: Numpy is not available
+#   on torch.from_numpy — fix by upgrading PyTorch, not by pinning NumPy<2 if you need spikify.
+
+numpy>=2.1
+torch>=2.2
+scipy
+matplotlib
+scikit-learn
+
+# Temporal encoders for experiment_neutnn_imu_eeg_core.py --encoder spikify
+innuce-spikify

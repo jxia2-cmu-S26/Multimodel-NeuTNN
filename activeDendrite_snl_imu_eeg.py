@@ -50,6 +50,11 @@ frac = 0
 wBase = 12
 wMax = 16
 
+### Sample Rates ###
+IMU_SAMPLE_RATE = 128.0  # Hz
+EEG_SAMPLE_RATE_ORIGINAL = 100.0  # Hz (native EEG rate)
+RESAMPLE_RATE = IMU_SAMPLE_RATE  # Resample EEG to 128 Hz for unified temporal resolution
+
 # Temporal receptive field for spike raster (n_units, window_len)
 kernel_len = 5
 stride_t = 2
@@ -64,7 +69,7 @@ n_units = n_eeg_channels * n_thresholds * 2  # delta mod: pos+neg per threshold
 numDistalInputs = kernel_len * n_units
 numSegments = 36
 numDendrites = 4     # locomotion classes: standing, slow walk, fast walk, running
-window_len = 64    # 512hz = 4s window at ~128 Hz
+window_len = 128    # 1s window at 128 Hz (both IMU and resampled EEG)
 numNeurons = (window_len - kernel_len) // stride_t + 1
 threshold = 0
 voting_thresh = 0
@@ -76,6 +81,7 @@ SEARCH_SEED = 42
 RUN_CONFIG_SEARCH = 1
 BEST_CONFIG_PATH = Path(__file__).resolve().parent / "config" / "best_snl_imu_config.json"
 BEST_RESULT_TXT_PATH = Path(__file__).resolve().parent / "config" / "best_snl_imu_eeg_result.txt"
+GRAPHS_DIR = Path(__file__).resolve().parent / "graphs"
 
 
 def parse_runtime_args():
@@ -406,6 +412,18 @@ class MultiModalSlidingWindowDataset(Dataset):
                     continue
 
                 data_sel = data[eeg_indices].astype(np.float64)
+                
+                # Resample EEG from 100 Hz to 128 Hz to match IMU temporal resolution
+                if EEG_SAMPLE_RATE_ORIGINAL != RESAMPLE_RATE:
+                    n_samples_new = int(data_sel.shape[1] * (RESAMPLE_RATE / EEG_SAMPLE_RATE_ORIGINAL))
+                    data_sel_resampled = np.zeros((data_sel.shape[0], n_samples_new), dtype=np.float64)
+                    for ch_idx in range(data_sel.shape[0]):
+                        data_sel_resampled[ch_idx] = np.interp(
+                            np.linspace(0, data_sel.shape[1]-1, n_samples_new),
+                            np.arange(data_sel.shape[1]),
+                            data_sel[ch_idx]
+                        )
+                    data_sel = data_sel_resampled
 
             th_base = threshold_base_imu if modality == "imu" else threshold_base_eeg
 
@@ -1028,6 +1046,8 @@ if breakpoint1 > 0 and breakpoint2 > 0:
 ### Storing image ###
 
 if breakpoint1 > 0 and breakpoint2 > 0:
+    GRAPHS_DIR.mkdir(parents=True, exist_ok=True)
+
     # Error rate over training+testing intervals (best-effort; ignore failures)
     try:
         plt.figure(figsize=(10, 4))
@@ -1036,7 +1056,7 @@ if breakpoint1 > 0 and breakpoint2 > 0:
         plt.ylabel("Error Rate")
         plt.legend(["activeDendriteLayer (IMU+EEG)"])
         plt.tight_layout()
-        plt.savefig("online_adaptivity_imu_eeg.png")
+        plt.savefig(GRAPHS_DIR / "online_adaptivity_imu_eeg.png")
     except Exception as e:
         print(f"WARNING: error-rate plotting failed: {e}")
 
@@ -1052,6 +1072,6 @@ if breakpoint1 > 0 and breakpoint2 > 0:
     plt.ylabel("True")
     plt.title("IMU+EEG Confusion Matrix")
     plt.tight_layout()
-    plt.savefig("confusion_matrix_imu_eeg.png")
+    plt.savefig(GRAPHS_DIR / "confusion_matrix_imu_eeg.png")
 else:
     print("Skipping plot (no data).")
