@@ -1,0 +1,30 @@
+Best Multimodel Result
+============================================================
+Train Accuracy: 44.8000%
+Test Accuracy:  70.8333%
+Macro F1:       0.6246
+
+Best Config:
+{
+  "capture": 1.0,
+  "search": 0.2,
+  "backoff": 0.4,
+  "frac": 0.2,
+  "wBase": 14,
+  "wMax": 14,
+  "voting_thresh": 1.0,
+  "epochs": 2,
+  "inc_learn_eval": 1,
+  "eeg_encoder": "tts",
+  "tts_interval": 8
+}
+
+Confusion Matrix (rows=true, cols=pred):
+[[  0 128  17   5]
+ [  0 147   3   0]
+ [  0  20 130   0]
+ [  0   0   2 148]]
+
+Per-class precision: [0.0, 0.4983, 0.8553, 0.9673]
+Per-class recall:    [0.0, 0.98, 0.8667, 0.9867]
+Per-class F1:        [0.0, 0.6607, 0.8609, 0.9769]
